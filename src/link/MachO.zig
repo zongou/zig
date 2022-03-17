@@ -4367,7 +4367,7 @@ fn populateMissingMetadata(self: *MachO) !void {
                     .vmaddr = pagezero_vmsize,
                     .vmsize = needed_size,
                     .filesize = needed_size,
-                    .maxprot = macho.PROT.READ | macho.PROT.EXEC | macho.PROT.WRITE,
+                    .maxprot = macho.PROT.READ | macho.PROT.EXEC,
                     .initprot = macho.PROT.READ | macho.PROT.EXEC,
                     .cmdsize = @sizeOf(macho.segment_command_64),
                 },
