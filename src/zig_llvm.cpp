@@ -681,6 +681,8 @@ static_assert((Triple::OSType)ZigLLVM_PS4 == Triple::PS4, "");
 static_assert((Triple::OSType)ZigLLVM_ELFIAMCU == Triple::ELFIAMCU, "");
 static_assert((Triple::OSType)ZigLLVM_TvOS == Triple::TvOS, "");
 static_assert((Triple::OSType)ZigLLVM_WatchOS == Triple::WatchOS, "");
+// TODO: blocked by LLVM 18
+// static_assert((Triple::OSType)ZigLLVM_XROS == Triple::VisionOS, "");
 static_assert((Triple::OSType)ZigLLVM_Mesa3D == Triple::Mesa3D, "");
 static_assert((Triple::OSType)ZigLLVM_Contiki == Triple::Contiki, "");
 static_assert((Triple::OSType)ZigLLVM_AMDPAL == Triple::AMDPAL, "");

@@ -46,6 +46,7 @@ pub const Os = struct {
         elfiamcu,
         tvos,
         watchos,
+        visionos,
         driverkit,
         mesa3d,
         contiki,
@@ -65,7 +66,7 @@ pub const Os = struct {
 
         pub inline fn isDarwin(tag: Tag) bool {
             return switch (tag) {
-                .ios, .macos, .watchos, .tvos => true,
+                .ios, .macos, .watchos, .tvos, .visionos => true,
                 else => false,
             };
         }
@@ -316,6 +317,12 @@ pub const Os = struct {
                         .max = .{ .major = 17, .minor = 1, .patch = 0 },
                     },
                 },
+                .visionos => return .{
+                    .semver = .{
+                        .min = .{ .major = 1, .minor = 0, .patch = 0 },
+                        .max = .{ .major = 1, .minor = 0, .patch = 0 },
+                    },
+                },
                 .netbsd => return .{
                     .semver = .{
                         .min = .{ .major = 8, .minor = 0, .patch = 0 },
@@ -380,6 +387,7 @@ pub const Os = struct {
             .ios,
             .tvos,
             .watchos,
+            .visionos,
             .netbsd,
             .openbsd,
             .dragonfly,
@@ -416,6 +424,7 @@ pub const Os = struct {
             .ios,
             .tvos,
             .watchos,
+            .visionos,
             .dragonfly,
             .openbsd,
             .haiku,
@@ -577,6 +586,7 @@ pub const Abi = enum {
             .ios,
             .tvos,
             .watchos,
+            .visionos,
             .driverkit,
             .shadermodel,
             .liteos, // TODO: audit this
@@ -652,7 +662,7 @@ pub const ObjectFormat = enum {
     pub fn default(os_tag: Os.Tag, cpu_arch: Cpu.Arch) ObjectFormat {
         return switch (os_tag) {
             .windows, .uefi => .coff,
-            .ios, .macos, .watchos, .tvos => .macho,
+            .ios, .macos, .watchos, .tvos, .visionos => .macho,
             .plan9 => .plan9,
             else => return switch (cpu_arch) {
                 .wasm32, .wasm64 => .wasm,
@@ -1525,6 +1535,7 @@ pub inline fn hasDynamicLinker(self: Target) bool {
         .ios,
         .tvos,
         .watchos,
+        .visionos,
         .macos,
         .uefi,
         .windows,
@@ -1729,6 +1740,7 @@ pub fn standardDynamicLinkerPath_cpu_os_abi(cpu: Cpu, os_tag: Os.Tag, abi: Abi) 
         .tvos,
         .watchos,
         .macos,
+        .visionos,
         => return copy(&result, "/usr/lib/dyld"),
 
         // Operating systems in this list have been verified as not having a standard
@@ -2314,7 +2326,7 @@ pub fn c_type_bit_size(target: Target, c_type: CType) u16 {
             },
         },
 
-        .macos, .ios, .tvos, .watchos => switch (c_type) {
+        .macos, .ios, .tvos, .watchos, .visionos => switch (c_type) {
             .char => return 8,
             .short, .ushort => return 16,
             .int, .uint, .float => return 32,

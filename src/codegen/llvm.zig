@@ -145,6 +145,7 @@ pub fn targetTriple(allocator: Allocator, target: std.Target) ![]const u8 {
         .ios => "ios",
         .tvos => "tvos",
         .watchos => "watchos",
+        .visionos => "xros",
         .driverkit => "driverkit",
         .shadermodel => "shadermodel",
         .liteos => "liteos",
@@ -245,6 +246,9 @@ pub fn targetOs(os_tag: std.Target.Os.Tag) llvm.OSType {
         .elfiamcu => .ELFIAMCU,
         .tvos => .TvOS,
         .watchos => .WatchOS,
+        // TODO: blocked by LLVM 18
+        // .visionos => .XROS,
+        .visionos => unreachable,
         .mesa3d => .Mesa3D,
         .contiki => .Contiki,
         .amdpal => .AMDPAL,

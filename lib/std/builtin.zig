@@ -597,7 +597,7 @@ pub const VaListX86_64 = extern struct {
 pub const VaList = switch (builtin.cpu.arch) {
     .aarch64, .aarch64_be => switch (builtin.os.tag) {
         .windows => *u8,
-        .ios, .macos, .tvos, .watchos => *u8,
+        .ios, .macos, .tvos, .watchos, .visionos => *u8,
         else => @compileError("disabled due to miscompilations"), // VaListAarch64,
     },
     .arm => switch (builtin.os.tag) {

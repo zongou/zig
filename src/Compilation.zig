@@ -5325,6 +5325,12 @@ pub fn addCCArgs(
                         }));
                     },
                 },
+                .visionos => {
+                    const ver = target.os.version_range.semver.min;
+                    try argv.append(try std.fmt.allocPrint(arena, "-mxros-version-min={d}.{d}.{d}", .{
+                        ver.major, ver.minor, ver.patch,
+                    }));
+                },
                 else => {},
             }
 

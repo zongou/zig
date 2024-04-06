@@ -315,6 +315,8 @@ pub const OSType = enum(c_int) {
     TvOS,
     WatchOS,
     DriverKit,
+    // TODO: blocked by LLVM 18
+    // VisionOS,
     Mesa3D,
     Contiki,
     AMDPAL,

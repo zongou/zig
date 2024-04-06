@@ -235,6 +235,8 @@ enum ZigLLVM_OSType {
     ZigLLVM_TvOS,       // Apple tvOS
     ZigLLVM_WatchOS,    // Apple watchOS
     ZigLLVM_DriverKit,  // Apple DriverKit
+    // TODO: blocked by LLVM 18
+    // ZigLLVM_XROS,       // Apple VisionOS
     ZigLLVM_Mesa3D,
     ZigLLVM_Contiki,
     ZigLLVM_AMDPAL,     // AMD PAL Runtime
