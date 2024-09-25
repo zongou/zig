@@ -150,6 +150,7 @@ fn mainServer() !void {
                 try server.serveU64Message(.fuzz_start_addr, entry_addr);
                 defer if (testing.allocator_instance.deinit() == .leak) std.process.exit(1);
                 is_fuzz_test = false;
+                fuzzer_set_name(test_fn.name.ptr, test_fn.name.len);
                 test_fn.func() catch |err| switch (err) {
                     error.SkipZigTest => return,
                     else => {
@@ -341,8 +342,10 @@ const FuzzerSlice = extern struct {
 
 var is_fuzz_test: bool = undefined;
 
-extern fn fuzzer_start(testOne: *const fn ([*]const u8, usize) callconv(.C) void) void;
+extern fn fuzzer_set_name(name_ptr: [*]const u8, name_len: usize) void;
 extern fn fuzzer_init(cache_dir: FuzzerSlice) void;
+extern fn fuzzer_init_corpus_elem(input_ptr: [*]const u8, input_len: usize) void;
+extern fn fuzzer_start(testOne: *const fn ([*]const u8, usize) callconv(.C) void) void;
 extern fn fuzzer_coverage_id() u64;
 
 pub fn fuzz(
@@ -395,8 +398,11 @@ pub fn fuzz(
     if (builtin.fuzz) {
         const prev_allocator_state = testing.allocator_instance;
         testing.allocator_instance = .{};
+        defer testing.allocator_instance = prev_allocator_state;
+
+        for (options.corpus) |elem| fuzzer_init_corpus_elem(elem.ptr, elem.len);
+
         fuzzer_start(&global.fuzzer_one);
-        testing.allocator_instance = prev_allocator_state;
         return;
     }
 
