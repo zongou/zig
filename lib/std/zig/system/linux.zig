@@ -388,27 +388,8 @@ pub fn detectNativeCpuAndFeatures() ?Target.Cpu {
 
     const current_arch = builtin.cpu.arch;
     switch (current_arch) {
-        .arm, .armeb, .thumb, .thumbeb => {
+        .arm, .armeb, .thumb, .thumbeb, .aarch64, .aarch64_be, .aarch64_32 => {
             return ArmCpuinfoParser.parse(current_arch, f.reader()) catch null;
-        },
-        .aarch64, .aarch64_be, .aarch64_32 => {
-            const registers = [12]u64{
-                getAArch64CpuFeature("MIDR_EL1"),
-                getAArch64CpuFeature("ID_AA64PFR0_EL1"),
-                getAArch64CpuFeature("ID_AA64PFR1_EL1"),
-                getAArch64CpuFeature("ID_AA64DFR0_EL1"),
-                getAArch64CpuFeature("ID_AA64DFR1_EL1"),
-                getAArch64CpuFeature("ID_AA64AFR0_EL1"),
-                getAArch64CpuFeature("ID_AA64AFR1_EL1"),
-                getAArch64CpuFeature("ID_AA64ISAR0_EL1"),
-                getAArch64CpuFeature("ID_AA64ISAR1_EL1"),
-                getAArch64CpuFeature("ID_AA64MMFR0_EL1"),
-                getAArch64CpuFeature("ID_AA64MMFR1_EL1"),
-                getAArch64CpuFeature("ID_AA64MMFR2_EL1"),
-            };
-
-            const core = @import("arm.zig").aarch64.detectNativeCpuAndFeatures(current_arch, registers);
-            return core;
         },
         .sparc64 => {
             return SparcCpuinfoParser.parse(current_arch, f.reader()) catch null;
